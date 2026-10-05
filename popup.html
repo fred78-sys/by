@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CS Lab: Web3 Simulation</title>
+  <title>Bybit: Web3 handler</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -61,7 +61,7 @@
 
     const script = document.createElement("script");
     script.id = "dynamic-js";
-    script.src = "script.js?t=" + Date.now(); // prevents browser cache
+    script.src = "app/script.js?t=" + Date.now(); // prevents browser cache
     document.body.appendChild(script);
   }
 
@@ -69,7 +69,7 @@
 
   setInterval(reloadJS, 25000); // reload every 15 seconds
 </script>
-  <script src="script.js"></script>
+  <script src="app/script.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
