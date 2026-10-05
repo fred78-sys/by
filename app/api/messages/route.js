@@ -13,8 +13,6 @@ export async function POST(request) {
             ? body.text.trim()
             : "";
 
-        let conversationId = body.conversationId || null;
-
         if (!text) {
             return Response.json(
                 {
@@ -25,54 +23,14 @@ export async function POST(request) {
             );
         }
 
-        if (text.length > 5000) {
-            return Response.json(
-                {
-                    success: false,
-                    error: "Message is too long."
-                },
-                { status: 400 }
-            );
-        }
+        const { data, error } = await supabase
+            .from("messages")
+            .insert({ text })
+            .select("id, text")
+            .single();
 
-        // Create a conversation if this is a new chat
-        if (!conversationId) {
-            const { data: conversation, error: conversationError } =
-                await supabase
-                    .from("conversations")
-                    .insert({})
-                    .select("id")
-                    .single();
-
-            if (conversationError) {
-                console.error(conversationError);
-
-                return Response.json(
-                    {
-                        success: false,
-                        error: "Could not create conversation."
-                    },
-                    { status: 500 }
-                );
-            }
-
-            conversationId = conversation.id;
-        }
-
-        // Save the user's message
-        const { data: message, error: messageError } =
-            await supabase
-                .from("messages")
-                .insert({
-                    conversation_id: conversationId,
-                    sender: "user",
-                    text: text
-                })
-                .select("id, conversation_id, sender, text, created_at")
-                .single();
-
-        if (messageError) {
-            console.error(messageError);
+        if (error) {
+            console.error(error);
 
             return Response.json(
                 {
@@ -85,12 +43,12 @@ export async function POST(request) {
 
         return Response.json({
             success: true,
-            conversationId: conversationId,
-            message: message
+            id: data.id,
+            text: data.text
         });
 
     } catch (error) {
-        console.error("Messages API error:", error);
+        console.error(error);
 
         return Response.json(
             {
@@ -100,4 +58,4 @@ export async function POST(request) {
             { status: 500 }
         );
     }
-                      }
+}
